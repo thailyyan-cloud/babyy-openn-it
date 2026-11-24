@@ -192,6 +192,37 @@ h1,h2,h3{margin:0;line-height:1.25}
 .meter i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--gold),var(--rose));transition:width .08s linear}
 .meter b{position:absolute;top:0;bottom:0;left:62.5%;width:2px;background:var(--rose-deep);opacity:.6}
 
+/* ---------- Nhạc sinh nhật (YouTube, phát ngay trong trang) ---------- */
+.player{max-width:420px;margin:20px auto 0;text-align:left;scroll-margin-top:70px}
+.pl-title{margin:0 0 10px;text-align:center;font-size:16px;font-weight:700;color:var(--rose-deep)}
+.pl-video{position:relative;width:100%;aspect-ratio:16/9;min-height:180px;border-radius:18px;overflow:hidden;background:#1B1020}
+.pl-video iframe,.pl-video #ytPlayer{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player.khong-video .pl-video{display:none}
+.pl-hint{margin:10px 0 0;text-align:center;font-size:13px;font-weight:600;color:var(--ink-soft)}
+.pl-hint:empty{display:none}
+.songs{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.song{
+  display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;
+  min-height:52px;padding:8px 12px 8px 10px;border-radius:16px;cursor:pointer;text-align:left;
+  background:var(--card-strong);border:1px solid var(--card-border);box-shadow:var(--shadow-soft);
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .15s,border-color .2s,background .2s;
+}
+.song:active{transform:scale(.98)}
+.song:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.song .sn{font-family:'Mali',sans-serif;font-weight:700;color:var(--rose-deep);text-align:center}
+.song .st{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.song .st b{font-size:15px;font-weight:700;overflow-wrap:anywhere}
+.song .st small{font-size:12.5px;font-weight:600;color:var(--ink-soft);overflow-wrap:anywhere}
+.song .bars{display:none;align-items:flex-end;gap:2px;height:14px;width:13px}
+.song .bars i{display:block;width:3px;height:4px;background:var(--rose-deep);border-radius:2px}
+.song.now{border-color:var(--rose);background:rgba(228,111,142,.16)}
+.song.now .bars{display:inline-flex}
+.player.playing .song.now .bars i{animation:eq 1s ease-in-out infinite}
+.player.playing .song.now .bars i:nth-child(2){animation-delay:-.33s}
+.player.playing .song.now .bars i:nth-child(3){animation-delay:-.66s}
+.song.loi{opacity:.5}
+.song.loi small::after{content:' · chưa phát được, đã bỏ qua'}
+
 /* ---------- Bầu trời 8 lời chúc ---------- */
 .sky{
   padding:24px 10px 18px;overflow:hidden;color:#F6EEF8;
@@ -351,7 +382,7 @@ h1,h2,h3{margin:0;line-height:1.25}
 
 <div class="controls">
   <button class="ctl icon" id="themeBtn" type="button" aria-label="Chuyển nền">🌙</button>
-  <button class="ctl" id="musicBtn" type="button" aria-pressed="false" aria-label="Bật nhạc Happy Birthday">
+  <button class="ctl" id="musicBtn" type="button" aria-pressed="false" aria-label="Bật nhạc sinh nhật" aria-controls="player">
     <span class="note" aria-hidden="true">🎵</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
     <span id="musicLbl">Nhạc</span>
@@ -412,6 +443,19 @@ h1,h2,h3{margin:0;line-height:1.25}
       <p class="step" id="step" aria-live="polite"></p>
       <div class="meter" id="meter" hidden><i id="meterFill"></i><b></b></div>
       <div class="actions" id="cakeActions"></div>
+      <!-- Nhạc: hiện ra khi thổi nến xong hoặc bấm nút Nhạc. Toàn video chính chủ, đã kiểm tra cho phép nhúng. -->
+      <div class="player" id="player" hidden>
+        <p class="pl-title">🎵 Nhạc sinh nhật</p>
+        <div class="pl-video"><div id="ytPlayer"></div></div>
+        <p class="pl-hint" id="plHint"></p>
+        <ol class="songs" id="plSongs">
+          <li><button type="button" class="song" data-id="h53q6iIORhw"><span class="sn" aria-hidden="true">1</span><span class="st"><b>Happy Birthday to You</b><small>AMEE, Hoàng Dũng, Obito</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
+          <li><button type="button" class="song" data-id="oDJ4ct59NC4"><span class="sn" aria-hidden="true">2</span><span class="st"><b>BIRTHDAY</b><small>SOMI</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
+          <li><button type="button" class="song" data-id="2-V3-WM-T-Y"><span class="sn" aria-hidden="true">3</span><span class="st"><b>Đây Là Bài Hát Sinh Nhật</b><small>Bùi Công Nam, Cái Lò Nướng, Fillinus</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
+          <li><button type="button" class="song" data-id="egVAW6l_QU8"><span class="sn" aria-hidden="true">4</span><span class="st"><b>BIRTHDAY</b><small>Anne-Marie</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
+          <li><button type="button" class="song" data-id="0-q1KafFCLU"><span class="sn" aria-hidden="true">5</span><span class="st"><b>Celebrity</b><small>IU</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
+        </ol>
+      </div>
     </section>
 
     <!-- ============ BẦU TRỜI 8 LỜI CHÚC ============ -->
@@ -611,8 +655,7 @@ h1,h2,h3{margin:0;line-height:1.25}
     const SEMI = { C: 0, 'C#': 1, D: 2, 'D#': 3, E: 4, F: 5, 'F#': 6, G: 7, 'G#': 8, A: 9, 'A#': 10, B: 11 };
     const hz = n => { const m = /^([A-G]#?)(\d)$/.exec(n); return 440 * Math.pow(2, (SEMI[m[1]] + (+m[2] + 1) * 12 - 69) / 12); };
     let ctx = null, master = null, conv = null, fxBus = null;
-    let chay = null; // bản nhạc đang phát
-    const api = { onEnd: null };
+    const api = {};
 
     function impulse(sec, decay) {
       const len = Math.floor(ctx.sampleRate * sec), b = ctx.createBuffer(2, len, ctx.sampleRate);
@@ -684,45 +727,10 @@ h1,h2,h3{margin:0;line-height:1.25}
       s.connect(lp); lp.connect(gn); gn.connect(master); s.start(t);
     }
 
-    // "Happy Birthday to You" (giai điệu đã thuộc phạm vi công cộng), nhịp 3/4, có phách lấy đà
-    const HB = [['G4',0,.75],['G4',.75,.25],['A4',1,1],['G4',2,1],['C5',3,1],['B4',4,2],
-      ['G4',6,.75],['G4',6.75,.25],['A4',7,1],['G4',8,1],['D5',9,1],['C5',10,2],
-      ['G4',12,.75],['G4',12.75,.25],['G5',13,1],['E5',14,1],['C5',15,1],['B4',16,1],['A4',17,1.5],
-      ['F5',18.5,.75],['F5',19.25,.25],['E5',19.5,1],['C5',20.5,1],['D5',21.5,1],['C5',22.5,3]];
-    const BASS = [['C3',1],['G2',4],['G2',7],['C3',10],['C3',13],['F2',16],['C3',19.5],['G2',21.5],['C3',22.5]];
-    const BEAT = .44, DAI = 25.5;
-    function lich(out, t0) {
-      HB.forEach(([n, b, d]) => tine(hz(n), t0 + b * BEAT, .16, Math.max(.9, d * BEAT * 2.2), out));
-      BASS.forEach(([n, b]) => { tine(hz(n), t0 + b * BEAT, .09, 2.2, out); voice(hz(n) * 1.5, t0 + b * BEAT + .02, .03, 1.6, out); });
-    }
-    function playHB(lap = false) {
-      if (!ok()) return false;
-      stopHB();
-      const r = { out: bus(), timer: 0, lap };
-      chay = r;
-      const phat = t0 => {
-        lich(r.out, t0);
-        const het = t0 + DAI * BEAT;
-        if (r.lap) r.timer = setTimeout(() => { if (chay === r) phat(het + 1.4); }, (het - ctx.currentTime - .6) * 1000);
-        else r.timer = setTimeout(() => { if (chay === r) { chay = null; if (api.onEnd) api.onEnd(); } }, (het - ctx.currentTime + .8) * 1000);
-      };
-      phat(ctx.currentTime + .12);
-      return true;
-    }
-    function stopHB() {
-      if (!chay) return;
-      const r = chay; chay = null;
-      clearTimeout(r.timer);
-      const now = ctx.currentTime;
-      r.out.gain.cancelScheduledValues(now);
-      r.out.gain.setValueAtTime(r.out.gain.value, now);
-      r.out.gain.linearRampToValueAtTime(0, now + .5);
-      setTimeout(() => { try { r.out.disconnect(); } catch (e) {} }, 900);
-    }
-    Object.assign(api, { unlock, chime, sao, pop, phu, playHB, stopHB, supported: !!AC });
-    // Getter phải khai báo bằng defineProperty: Object.assign chỉ chép GIÁ TRỊ lúc gán (null/false mãi mãi)
+    // Nhạc sinh nhật giờ là bài hát thật (xem phần "Nhạc sinh nhật"), ở đây chỉ còn hiệu ứng âm thanh.
+    Object.assign(api, { unlock, chime, sao, pop, phu, supported: !!AC });
+    // Getter phải khai báo bằng defineProperty: Object.assign chỉ chép GIÁ TRỊ lúc gán (null mãi mãi)
     Object.defineProperty(api, 'ctx', { get: () => ctx });
-    Object.defineProperty(api, 'playing', { get: () => !!chay });
     return api;
   })();
 
@@ -768,21 +776,168 @@ h1,h2,h3{margin:0;line-height:1.25}
     return { start, stop, get on() { return !!stream; } };
   })();
 
+  /* ---------- Nhạc sinh nhật: bài hát thật, phát ngay trong trang (YouTube IFrame API) ---------- */
+  // Chỉ tải YouTube khi cần (thổi nến xong hoặc bấm nút Nhạc), để lúc mở trang không tốn dữ liệu.
+  const nhac = (() => {
+    const box = $('#player'), hint = $('#plHint'), list = $('#plSongs');
+    const rows = [...list.querySelectorAll('.song')];
+    const IDS = rows.map(r => r.dataset.id);
+    let yt = null, ready = false, failed = false, loading = false;
+    let cho = 0, choPhat = false, dangPhat = false, daLap = false, soLoi = 0;
+    let tTruoc = -1, boQuaDen = 0, onDoi = () => {};
+
+    function bao(on) {
+      if (on === dangPhat) return;
+      dangPhat = on;
+      box.classList.toggle('playing', on);
+      if (on) hint.textContent = '';
+      onDoi(on);
+    }
+    function nap() {
+      if (ready || failed) return;
+      if (window.YT && window.YT.Player) { tao(); return; }
+      if (loading) return;
+      loading = true;
+      const truoc = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { if (truoc) truoc(); tao(); };
+      const s = document.createElement('script');
+      s.src = 'https://www.youtube.com/iframe_api';
+      s.async = true;
+      s.onerror = hong;
+      document.head.appendChild(s);
+      setTimeout(() => { if (!ready) hong(); }, 15000);
+    }
+    function tao() {
+      if (yt || failed) return;
+      yt = new YT.Player('ytPlayer', {
+        width: '100%', height: '100%',
+        host: 'https://www.youtube-nocookie.com',
+        playerVars: { playsinline: 1, rel: 0, modestbranding: 1 },
+        events: { onReady: sanSang, onStateChange: doi, onError: loi },
+      });
+    }
+    function sanSang() {
+      ready = true;
+      // iPhone không cho trang tự phát có tiếng: lần đầu em phải chạm ▶ trên video
+      hint.textContent = 'Nếu nhạc chưa phát, em bấm ▶ trên video nha';
+      if (choPhat && !mic.on) yt.loadPlaylist(IDS, cho); else yt.cuePlaylist(IDS, cho);
+      choPhat = false;
+    }
+    // Không tải được YouTube (mạng chặn, mất mạng): bấm tên bài thì mở YouTube
+    function hong() {
+      if (ready || failed) return;
+      failed = true;
+      box.classList.add('khong-video');
+      hint.textContent = 'Chưa tải được trình phát, em bấm vào tên bài để nghe trên YouTube nha';
+    }
+    // Dò theo MÃ VIDEO chứ không theo số thứ tự: YouTube có thể lặng lẽ bỏ video hỏng khỏi danh sách
+    const vidNow = () => { try { const m = /[?&]v=([\w-]{11})/.exec(yt.getVideoUrl() || ''); return m ? m[1] : null; } catch (e) { return null; } };
+    const plNow = () => { try { return yt.getPlaylist() || []; } catch (e) { return []; } };
+    function danhDau() {
+      if (!yt || !yt.getVideoUrl) return;
+      const id = vidNow(), pl = plNow();
+      rows.forEach(r => {
+        r.classList.toggle('now', r.dataset.id === id);
+        if (pl.length && !pl.includes(r.dataset.id)) r.classList.add('loi');
+      });
+    }
+    function doi(e) {
+      const S = YT.PlayerState;
+      // Hết bài cuối thì quay lại bài đầu
+      if (!daLap && (e.data === S.CUED || e.data === S.PLAYING)) { try { yt.setLoop(true); daLap = true; } catch (er) {} }
+      if (e.data === S.PLAYING) { soLoi = 0; bao(true); }
+      else if (e.data === S.PAUSED || e.data === S.ENDED || e.data === S.CUED) bao(false);
+      danhDau();
+      // Dự phòng: hết bài mà YouTube chưa tự sang bài kế thì tự chuyển
+      if (e.data === S.ENDED) setTimeout(() => { if (yt.getPlayerState() === S.ENDED) yt.nextVideo(); }, 1500);
+    }
+    function loi() {
+      const r = rows.find(x => x.dataset.id === vidNow());
+      if (r) r.classList.add('loi');
+      if (++soLoi < IDS.length) setTimeout(() => yt.nextVideo(), 700);
+    }
+
+    // Trên tên miền thật, YouTube có lúc báo trạng thái -1 dù nhạc vẫn chạy.
+    // Nên mỗi giây xem thời gian phát có tăng không để biết nhạc đang chạy thật hay không.
+    setInterval(() => {
+      if (!ready || document.hidden) return;
+      if (Date.now() < boQuaDen) { tTruoc = -1; return; } // vừa bấm dừng: chờ YouTube dừng hẳn
+      let t, s;
+      try { t = yt.getCurrentTime() || 0; s = yt.getPlayerState(); } catch (e) { return; }
+      const chay = s === YT.PlayerState.PLAYING || (tTruoc >= 0 && t > tTruoc + .3 && t - tTruoc < 3);
+      tTruoc = t;
+      bao(chay);
+      danhDau();
+    }, 1000);
+
+    // Trên điện thoại, YouTube tự dừng khi khoá màn hình / chuyển app. Quay lại trang thì phát tiếp.
+    let phatTruocKhiAn = false, giayTruocKhiAn = 0, baiTruocKhiAn = null;
+    document.addEventListener('visibilitychange', () => {
+      if (!ready) return;
+      if (document.hidden) {
+        phatTruocKhiAn = dangPhat;
+        try { giayTruocKhiAn = yt.getCurrentTime() || 0; baiTruocKhiAn = vidNow(); } catch (e) {}
+        return;
+      }
+      if (!phatTruocKhiAn) return;
+      phatTruocKhiAn = false;
+      setTimeout(() => {
+        if (mic.on || vidNow() !== baiTruocKhiAn) return;
+        if (yt.getCurrentTime() < giayTruocKhiAn - 2) yt.seekTo(giayTruocKhiAn, true);
+        if (yt.getPlayerState() !== YT.PlayerState.PLAYING) yt.playVideo();
+      }, 400);
+    });
+
+    list.addEventListener('click', e => {
+      const r = e.target.closest('.song');
+      if (!r) return;
+      const id = r.dataset.id;
+      if (failed) { window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener'); return; }
+      if (mic.on) { toast('Đợi em thổi nến xong đã nha'); return; }
+      if (!ready) { cho = IDS.indexOf(id); choPhat = true; nap(); return; }
+      const pl = plNow(), idx = pl.length ? pl.indexOf(id) : IDS.indexOf(id);
+      if (idx < 0) { r.classList.add('loi'); toast('Bài này hiện chưa phát được ở đây, em chọn bài khác nha'); return; }
+      if (!pl.length) yt.loadPlaylist(IDS, idx); else yt.playVideoAt(idx);
+    });
+
+    function mo(phat) {
+      box.hidden = false;
+      if (failed) return;
+      if (!ready) {
+        if (phat) choPhat = true;
+        hint.textContent = 'Đang tải nhạc…';
+        nap();
+        return;
+      }
+      if (!phat) return;
+      if (!plNow().length) yt.loadPlaylist(IDS, 0); else yt.playVideo();
+    }
+    function dung() {
+      choPhat = false;
+      if (ready) { try { yt.pauseVideo(); } catch (e) {} }
+      boQuaDen = Date.now() + 2500;
+      bao(false);
+    }
+    return {
+      mo, dung,
+      get dangPhat() { return dangPhat; },
+      set onDoi(f) { onDoi = f; },
+    };
+  })();
+
   /* ---------- Nút nhạc & nền sáng/tối ---------- */
   const musicBtn = $('#musicBtn'), musicLbl = $('#musicLbl');
   function musicUI(on) {
     musicBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    musicBtn.setAttribute('aria-label', on ? 'Tắt nhạc' : 'Bật nhạc Happy Birthday');
+    musicBtn.setAttribute('aria-label', on ? 'Tạm dừng nhạc' : 'Bật nhạc sinh nhật');
     musicLbl.textContent = on ? 'Đang phát' : 'Nhạc';
   }
-  am.onEnd = () => musicUI(false);
-  if (!am.supported) musicBtn.hidden = true;
-  musicBtn.addEventListener('click', async () => {
-    if (am.playing) { am.stopHB(); musicUI(false); return; }
+  nhac.onDoi = musicUI;
+  musicBtn.addEventListener('click', () => {
+    if (nhac.dangPhat) { nhac.dung(); return; }
     if (mic.on) { toast('Đợi em thổi nến xong đã nha'); return; }
-    musicUI(true);
-    const okk = await am.unlock();
-    if (!okk || !am.playHB(true)) { musicUI(false); toast('Chưa bật được nhạc, em thử bấm lại nha'); }
+    nhac.mo(true);
+    requestAnimationFrame(() => $('#player').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }));
   });
 
   const themeBtn = $('#themeBtn'), metaTheme = $('meta[name="theme-color"]');
@@ -939,7 +1094,7 @@ h1,h2,h3{margin:0;line-height:1.25}
     stepEl.textContent = 'Đang mở micro…';
     try {
       await am.unlock();
-      am.stopHB(); musicUI(false);
+      nhac.dung(); // đang mở micro thì tạm dừng nhạc, kẻo micro nghe nhầm tiếng nhạc là tiếng thổi
       await mic.start(mucAm, tatMot);
       if (phase !== 'thoi') { mic.stop(); return; }
       meter.hidden = false;
@@ -971,7 +1126,9 @@ h1,h2,h3{margin:0;line-height:1.25}
     nut([['Thắp lại nến', 'soft', buocUoc]]);
     fx.fireworks(6);
     setTimeout(() => fx.rain(110), 400);
-    if (am.playHB(false)) musicUI(true);
+    // Thổi nến xong thì mở nhạc. Cuộn nhẹ cho thấy khung nhạc, vì trên iPhone em cần chạm ▶ lần đầu.
+    nhac.mo(true);
+    setTimeout(() => $('#player').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' }), 1800);
   }
   buocUoc();
 
@@ -1041,7 +1198,7 @@ h1,h2,h3{margin:0;line-height:1.25}
     soSang++;
     g.classList.add('lit');
     g.setAttribute('aria-label', `Ngôi sao ${k + 1}, đã sáng`);
-    am.sao(soSang - 1);
+    if (!nhac.dangPhat) am.sao(soSang - 1); // đang nghe bài hát thì không chen tiếng chuông
     const [x, y] = centerOf(g);
     fx.confetti(x, y, 10, .45);
     // Lời chúc hiện theo thứ tự chạm, nên lời cuối luôn là lời ở ngôi sao cuối cùng
@@ -1051,7 +1208,7 @@ h1,h2,h3{margin:0;line-height:1.25}
     if (soSang === 8) {
       setTimeout(() => {
         sky.classList.add('done');
-        am.chime();
+        if (!nhac.dangPhat) am.chime();
         const r = sky.getBoundingClientRect();
         fx.confetti(r.left + r.width / 2, r.top + r.height * .45, 50, 1);
       }, 1600);
@@ -1099,7 +1256,6 @@ h1,h2,h3{margin:0;line-height:1.25}
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) return;
     if (mic.on) { mic.stop(); if (phase === 'thoi') buocThoi(); }
-    if (am.playing) { am.stopHB(); musicUI(false); }
   });
 })();
 </script>
