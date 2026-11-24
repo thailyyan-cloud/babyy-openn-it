@@ -22,6 +22,7 @@
     d.setAttribute('data-theme', t);
   })();
 </script>
+<link rel="preload" href="anh-nen.jpg" as="image">
 <style>
 /* =========================================================
    MÀU — kem, hồng đào, vàng nến; ban đêm: tím mận ấm
@@ -35,6 +36,9 @@
   --shadow:0 18px 40px -18px rgba(192,71,107,.4); --shadow-soft:0 8px 22px -12px rgba(192,71,107,.36);
   --gate-1:#FFF4EC; --gate-2:#FBD9E3;
   --paper:#FFFDF7; --paper-ink:#4B2736; --paper-line:rgba(228,111,142,.24);
+  /* Phủ lên ảnh nền: phía trên mỏng để thấy rõ mặt, phía dưới dày để chữ dễ đọc */
+  --wash:linear-gradient(180deg,rgba(255,247,240,.06) 0%,rgba(255,247,240,.12) 30%,rgba(255,240,236,.56) 50%,rgba(255,236,230,.8) 72%,rgba(255,232,223,.88) 100%);
+  --glow:rgba(255,247,240,.95);
 }
 :root[data-theme="dem"]{
   --bg-1:#1F1426; --bg-2:#2B1A35; --bg-3:#3A2142;
@@ -45,6 +49,8 @@
   --shadow:0 18px 40px -18px rgba(0,0,0,.65); --shadow-soft:0 8px 22px -12px rgba(0,0,0,.55);
   --gate-1:#3A2244; --gate-2:#1C1224;
   --paper:#F7EBE4; --paper-line:rgba(192,71,107,.2);
+  --wash:linear-gradient(180deg,rgba(31,20,38,.3) 0%,rgba(31,20,38,.36) 30%,rgba(31,20,38,.7) 50%,rgba(31,20,38,.84) 72%,rgba(31,20,38,.9) 100%);
+  --glow:rgba(31,20,38,.95);
   color-scheme:dark;
 }
 
@@ -61,14 +67,11 @@ body{
 }
 button{font:inherit;color:inherit}
 h1,h2,h3{margin:0;line-height:1.25}
-.bg{
-  position:fixed;inset:0;z-index:-1;
-  background:
-    radial-gradient(60% 40% at 12% 8%,var(--blob-1),transparent 70%),
-    radial-gradient(50% 35% at 92% 30%,var(--blob-2),transparent 70%),
-    radial-gradient(70% 45% at 50% 100%,var(--blob-3),transparent 70%),
-    linear-gradient(180deg,var(--bg-1),var(--bg-2) 55%,var(--bg-3));
-}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg-1)}
+/* Lớp mờ phía sau: lấp hai bên khi màn hình rộng hơn ảnh (máy tính, máy tính bảng) */
+.bg::before{content:'';position:absolute;inset:-60px;background:url(anh-nen.jpg) center/cover no-repeat;filter:blur(30px) saturate(115%)}
+/* Ảnh rõ: luôn cao bằng màn hình, nên mặt luôn nằm khoảng 30–40% chiều cao, phía trên phần chữ */
+.bg::after{content:'';position:absolute;inset:0;background:var(--wash),url(anh-nen.jpg) 50% 0/auto 100% no-repeat}
 #fx{position:fixed;inset:0;width:100%;height:100%;z-index:75;pointer-events:none}
 
 /* ---------- Nút góc trên ---------- */
@@ -111,9 +114,15 @@ h1,h2,h3{margin:0;line-height:1.25}
 
 /* ---------- Phần đầu + bóng bay ---------- */
 .hero{
-  position:relative;min-height:90vh;min-height:90svh;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:84px 18px 70px;text-align:center;
+  position:relative;min-height:100vh;min-height:100svh;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding:84px 18px 96px;text-align:center;
+}
+.hb-small,.hero-sub,.hint{text-shadow:0 0 12px var(--glow),0 0 3px var(--glow)}
+@media (max-height:700px){
+  .hero{padding-bottom:76px}
+  .hero .hb-small{margin-top:14px}
+  .hero .hint{margin-top:14px}
 }
 .hero-text{position:relative;z-index:2;pointer-events:none}
 .chip{
@@ -128,6 +137,7 @@ h1,h2,h3{margin:0;line-height:1.25}
   background:linear-gradient(100deg,var(--rose-deep) 8%,var(--rose) 32%,var(--gold) 50%,var(--rose) 68%,var(--rose-deep) 92%);
   background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
   animation:shimmer 8s ease-in-out infinite;
+  filter:drop-shadow(0 2px 14px var(--glow));
 }
 .hero-sub{max-width:330px;margin:2px auto 0;font-size:17px;line-height:1.55;color:var(--ink-soft)}
 .hint{margin:26px 0 0;font-size:13px;font-weight:600;color:var(--ink-soft);opacity:.85}
@@ -469,17 +479,17 @@ h1,h2,h3{margin:0;line-height:1.25}
 
       <article class="letter" id="letter" hidden aria-label="Thư sinh nhật anh gửi Huyền">
         <p class="to">Gửi Huyền,</p>
-        <p>Chúc mừng sinh nhật em.</p>
-        <p>Anh không biết em sẽ mở trang này lúc nào, có thể là ngay nửa đêm, cũng có thể là lúc vừa thức dậy. Lúc nào cũng được. Anh chỉ mong khi đọc tới những dòng này, em đang mỉm cười.</p>
-        <p>Với nhiều người, 25 tháng 11 có thể chỉ là một ngày như mọi ngày. Với anh thì không. Đó là ngày có em trên đời, và chỉ riêng điều đó thôi đã đủ để anh muốn chuẩn bị thật kỹ. Anh ngồi làm trang này, viết lá thư này, sửa đi sửa lại mấy lần, vì sợ chữ nghĩa không nói hết được điều anh muốn nói với em.</p>
-        <p>Anh quý những lúc được nói chuyện với em. Có hôm chỉ vài tin nhắn qua lại thôi mà cả ngày của anh dễ chịu hẳn. Có thể em không để ý, nhưng với anh, những lúc như vậy đáng giá lắm.</p>
-        <p>Mới tuần trước em còn mệt với nhức đầu, nên hôm nay anh mong trước hết là em đã khỏe hẳn, để được vui trọn vẹn ngày của mình.</p>
-        <p>Em xứng đáng được nâng niu lắm. Không chỉ hôm nay, mà cả những ngày bình thường nhất. Anh mong quanh em lúc nào cũng có người nhẹ nhàng với em, hỏi han em lúc em mệt, nhớ cả những điều nhỏ xíu em thích, và luôn để em thấy mình quan trọng. Vì với anh, em quan trọng thật.</p>
-        <p>Nếu có hôm nào em thấy mình bình thường quá, chẳng có gì đặc biệt, thì em mở lại lá thư này nha. Ở đây có một người thấy em đặc biệt hơn em nghĩ nhiều.</p>
-        <p>Tuổi mới, anh mong em được thương thật nhiều, và được thương đúng cách. Mong những ngày mệt qua thật nhanh, còn những ngày vui thì ở lại lâu hơn một chút. Mong những điều em đang ấp ủ sẽ lần lượt thành thật, không cần vội, cứ đến đúng lúc là được.</p>
-        <p>Anh không mong em lúc nào cũng phải mạnh mẽ đâu, chỉ mong em lúc nào cũng có lý do để cười. Còn những hôm chưa cười nổi, em nhớ là vẫn có anh ở đây, vui hay mệt gì anh cũng muốn nghe em kể.</p>
+        <p>Chúc mừng sinh nhật em nha.</p>
+        <p>Không biết em mở trang này lúc nào, nửa đêm hay sáng ra mới thấy. Lúc nào cũng được, miễn đọc tới đây em đang cười là anh vui rồi.</p>
+        <p>Trang này anh tự làm cho em đó. Lá thư này anh cũng sửa đi sửa lại mấy lần, viết xong đọc lại thấy chưa ưng là xoá viết lại. Tại anh muốn sinh nhật năm nay em có một món quà làm riêng cho em, không giống ai hết.</p>
+        <p>Nói thật là anh thích nói chuyện với em lắm. Có hôm chỉ nhắn qua lại vài câu thôi mà anh vui cả ngày. Chắc em không để ý đâu, nhưng với anh mấy lúc đó quý thiệt sự.</p>
+        <p>Tuần trước em còn mệt với nhức đầu, nên giờ anh chỉ mong em khỏe hẳn rồi, để hôm nay vui cho trọn.</p>
+        <p>Anh mong lúc nào cũng có người chiều em. Lúc mệt có người hỏi han, lúc buồn có người ở bên, mấy thứ nhỏ xíu em thích cũng có người nhớ. Em đáng được như vậy mà. Với anh, em quan trọng thật đó.</p>
+        <p>Hôm nào em thấy mình bình thường quá, chẳng có gì đặc biệt, thì mở lại thư này đọc nha. Anh thấy em đặc biệt hơn em nghĩ nhiều.</p>
+        <p>Tuổi mới, anh mong em được thương thật nhiều, mà phải thương đúng cách nha. Ngày mệt thì qua nhanh, ngày vui thì ở lại lâu lâu chút. Mấy chuyện em đang cố gắng cứ từ từ, tới lúc là tới.</p>
+        <p>Em không cần lúc nào cũng phải mạnh mẽ đâu. Hôm nào mệt quá, chưa cười nổi thì cứ nhắn anh, chuyện gì anh cũng nghe hết.</p>
         <p>À, em đọc được tới đây mà chưa ngủ gật thì anh cảm ơn em nhiều nha. Thư hơi dài, tại anh lỡ có nhiều điều muốn nói với em quá. Năm sau anh hứa sẽ viết ngắn hơn… mà chắc anh không giữ lời được đâu.</p>
-        <p>Sinh nhật vui vẻ nha em. 🎂</p>
+        <p>Sinh nhật vui vẻ nha Huyền. 🎂</p>
         <p class="sign">Luôn mong em hạnh phúc,<br>
           <!-- ✏️✏️✏️ ĐIỀN TÊN CỦA BẠN Ở ĐÂY ✏️✏️✏️
                Thay chữ "Anh" ngay dòng dưới bằng tên của bạn.
