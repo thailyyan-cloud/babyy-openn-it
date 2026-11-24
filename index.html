@@ -192,37 +192,6 @@ h1,h2,h3{margin:0;line-height:1.25}
 .meter i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--gold),var(--rose));transition:width .08s linear}
 .meter b{position:absolute;top:0;bottom:0;left:62.5%;width:2px;background:var(--rose-deep);opacity:.6}
 
-/* ---------- Nhạc sinh nhật (YouTube, phát ngay trong trang) ---------- */
-.player{max-width:420px;margin:20px auto 0;text-align:left;scroll-margin-top:70px}
-.pl-title{margin:0 0 10px;text-align:center;font-size:16px;font-weight:700;color:var(--rose-deep)}
-.pl-video{position:relative;width:100%;aspect-ratio:16/9;min-height:180px;border-radius:18px;overflow:hidden;background:#1B1020}
-.pl-video iframe,.pl-video #ytPlayer{position:absolute;inset:0;width:100%;height:100%;border:0}
-.player.khong-video .pl-video{display:none}
-.pl-hint{margin:10px 0 0;text-align:center;font-size:13px;font-weight:600;color:var(--ink-soft)}
-.pl-hint:empty{display:none}
-.songs{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
-.song{
-  display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;
-  min-height:52px;padding:8px 12px 8px 10px;border-radius:16px;cursor:pointer;text-align:left;
-  background:var(--card-strong);border:1px solid var(--card-border);box-shadow:var(--shadow-soft);
-  -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .15s,border-color .2s,background .2s;
-}
-.song:active{transform:scale(.98)}
-.song:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
-.song .sn{font-family:'Mali',sans-serif;font-weight:700;color:var(--rose-deep);text-align:center}
-.song .st{display:flex;flex-direction:column;min-width:0;line-height:1.3}
-.song .st b{font-size:15px;font-weight:700;overflow-wrap:anywhere}
-.song .st small{font-size:12.5px;font-weight:600;color:var(--ink-soft);overflow-wrap:anywhere}
-.song .bars{display:none;align-items:flex-end;gap:2px;height:14px;width:13px}
-.song .bars i{display:block;width:3px;height:4px;background:var(--rose-deep);border-radius:2px}
-.song.now{border-color:var(--rose);background:rgba(228,111,142,.16)}
-.song.now .bars{display:inline-flex}
-.player.playing .song.now .bars i{animation:eq 1s ease-in-out infinite}
-.player.playing .song.now .bars i:nth-child(2){animation-delay:-.33s}
-.player.playing .song.now .bars i:nth-child(3){animation-delay:-.66s}
-.song.loi{opacity:.5}
-.song.loi small::after{content:' · chưa phát được, đã bỏ qua'}
-
 /* ---------- Bầu trời 8 lời chúc ---------- */
 .sky{
   padding:24px 10px 18px;overflow:hidden;color:#F6EEF8;
@@ -380,9 +349,12 @@ h1,h2,h3{margin:0;line-height:1.25}
   <p class="gate-hint">Chạm vào hộp quà để mở</p>
 </div>
 
+<!-- Nhạc nền: "Happy Birthday to You Romantic Chill" (SergeQuadrado, Pixabay Content License) -->
+<audio id="bgm" src="nhac-sinh-nhat.mp3" preload="auto" loop></audio>
+
 <div class="controls">
   <button class="ctl icon" id="themeBtn" type="button" aria-label="Chuyển nền">🌙</button>
-  <button class="ctl" id="musicBtn" type="button" aria-pressed="false" aria-label="Bật nhạc sinh nhật" aria-controls="player">
+  <button class="ctl" id="musicBtn" type="button" aria-pressed="false" aria-label="Bật nhạc sinh nhật">
     <span class="note" aria-hidden="true">🎵</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
     <span id="musicLbl">Nhạc</span>
@@ -443,19 +415,6 @@ h1,h2,h3{margin:0;line-height:1.25}
       <p class="step" id="step" aria-live="polite"></p>
       <div class="meter" id="meter" hidden><i id="meterFill"></i><b></b></div>
       <div class="actions" id="cakeActions"></div>
-      <!-- Nhạc: hiện ra khi thổi nến xong hoặc bấm nút Nhạc. Toàn video chính chủ, đã kiểm tra cho phép nhúng. -->
-      <div class="player" id="player" hidden>
-        <p class="pl-title">🎵 Nhạc sinh nhật</p>
-        <div class="pl-video"><div id="ytPlayer"></div></div>
-        <p class="pl-hint" id="plHint"></p>
-        <ol class="songs" id="plSongs">
-          <li><button type="button" class="song" data-id="h53q6iIORhw"><span class="sn" aria-hidden="true">1</span><span class="st"><b>Happy Birthday to You</b><small>AMEE, Hoàng Dũng, Obito</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
-          <li><button type="button" class="song" data-id="oDJ4ct59NC4"><span class="sn" aria-hidden="true">2</span><span class="st"><b>BIRTHDAY</b><small>SOMI</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
-          <li><button type="button" class="song" data-id="2-V3-WM-T-Y"><span class="sn" aria-hidden="true">3</span><span class="st"><b>Đây Là Bài Hát Sinh Nhật</b><small>Bùi Công Nam, Cái Lò Nướng, Fillinus</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
-          <li><button type="button" class="song" data-id="egVAW6l_QU8"><span class="sn" aria-hidden="true">4</span><span class="st"><b>BIRTHDAY</b><small>Anne-Marie</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
-          <li><button type="button" class="song" data-id="0-q1KafFCLU"><span class="sn" aria-hidden="true">5</span><span class="st"><b>Celebrity</b><small>IU</small></span><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span></button></li>
-        </ol>
-      </div>
     </section>
 
     <!-- ============ BẦU TRỜI 8 LỜI CHÚC ============ -->
@@ -511,11 +470,15 @@ h1,h2,h3{margin:0;line-height:1.25}
       <article class="letter" id="letter" hidden aria-label="Thư sinh nhật anh gửi Huyền">
         <p class="to">Gửi Huyền,</p>
         <p>Chúc mừng sinh nhật em.</p>
-        <p>Anh không biết em sẽ mở trang này lúc nào, có thể là ngay nửa đêm, cũng có thể là lúc vừa thức dậy. Lúc nào cũng được, anh chỉ mong lúc đọc tới đây, em đang mỉm cười.</p>
-        <p>Mới tuần trước em còn mệt với nhức đầu, nên điều anh mong đầu tiên là em đã khỏe hẳn, để hôm nay được vui trọn vẹn.</p>
-        <p>Anh quý những lúc được nói chuyện với em. Có hôm chỉ vài tin nhắn qua lại thôi mà anh thấy cả ngày dễ chịu hẳn. Nên với anh, 25 tháng 11 cũng là một ngày đáng để vui.</p>
+        <p>Anh không biết em sẽ mở trang này lúc nào, có thể là ngay nửa đêm, cũng có thể là lúc vừa thức dậy. Lúc nào cũng được. Anh chỉ mong khi đọc tới những dòng này, em đang mỉm cười.</p>
+        <p>Với nhiều người, 25 tháng 11 có thể chỉ là một ngày như mọi ngày. Với anh thì không. Đó là ngày có em trên đời, và chỉ riêng điều đó thôi đã đủ để anh muốn chuẩn bị thật kỹ. Anh ngồi làm trang này, viết lá thư này, sửa đi sửa lại mấy lần, vì sợ chữ nghĩa không nói hết được điều anh muốn nói với em.</p>
+        <p>Anh quý những lúc được nói chuyện với em. Có hôm chỉ vài tin nhắn qua lại thôi mà cả ngày của anh dễ chịu hẳn. Có thể em không để ý, nhưng với anh, những lúc như vậy đáng giá lắm.</p>
+        <p>Mới tuần trước em còn mệt với nhức đầu, nên hôm nay anh mong trước hết là em đã khỏe hẳn, để được vui trọn vẹn ngày của mình.</p>
+        <p>Em xứng đáng được nâng niu lắm. Không chỉ hôm nay, mà cả những ngày bình thường nhất. Anh mong quanh em lúc nào cũng có người nhẹ nhàng với em, hỏi han em lúc em mệt, nhớ cả những điều nhỏ xíu em thích, và luôn để em thấy mình quan trọng. Vì với anh, em quan trọng thật.</p>
+        <p>Nếu có hôm nào em thấy mình bình thường quá, chẳng có gì đặc biệt, thì em mở lại lá thư này nha. Ở đây có một người thấy em đặc biệt hơn em nghĩ nhiều.</p>
         <p>Tuổi mới, anh mong em được thương thật nhiều, và được thương đúng cách. Mong những ngày mệt qua thật nhanh, còn những ngày vui thì ở lại lâu hơn một chút. Mong những điều em đang ấp ủ sẽ lần lượt thành thật, không cần vội, cứ đến đúng lúc là được.</p>
-        <p>Anh không mong em lúc nào cũng phải mạnh mẽ đâu, chỉ mong em lúc nào cũng có lý do để cười, còn những hôm chưa cười nổi thì em nhớ là vẫn có anh ở đây. Và nếu được, anh mong suốt tuổi mới này mình vẫn nói chuyện với nhau như bây giờ, để anh được nghe em kể đủ thứ chuyện, vui hay mệt gì anh cũng muốn nghe.</p>
+        <p>Anh không mong em lúc nào cũng phải mạnh mẽ đâu, chỉ mong em lúc nào cũng có lý do để cười. Còn những hôm chưa cười nổi, em nhớ là vẫn có anh ở đây, vui hay mệt gì anh cũng muốn nghe em kể.</p>
+        <p>Và nếu được, anh mong sang năm, rồi nhiều năm sau nữa, mình vẫn nói chuyện với nhau như bây giờ, và anh vẫn được ngồi chuẩn bị cho sinh nhật em như thế này.</p>
         <p>Sinh nhật vui vẻ nha em. 🎂</p>
         <p class="sign">Luôn mong em hạnh phúc,<br>
           <!-- ✏️✏️✏️ ĐIỀN TÊN CỦA BẠN Ở ĐÂY ✏️✏️✏️
@@ -776,151 +739,41 @@ h1,h2,h3{margin:0;line-height:1.25}
     return { start, stop, get on() { return !!stream; } };
   })();
 
-  /* ---------- Nhạc sinh nhật: bài hát thật, phát ngay trong trang (YouTube IFrame API) ---------- */
-  // Chỉ tải YouTube khi cần (thổi nến xong hoặc bấm nút Nhạc), để lúc mở trang không tốn dữ liệu.
+  /* ---------- Nhạc sinh nhật: một bản Happy Birthday, file nằm ngay trong trang ---------- */
+  // Trình duyệt không cho trang tự phát tiếng khi vừa mở link, nên nhạc bắt đầu ở lần chạm đầu tiên
+  // (thường là lúc em chạm mở hộp quà), rồi phát lặp lại cho tới khi em bấm nút Nhạc để tắt.
   const nhac = (() => {
-    const box = $('#player'), hint = $('#plHint'), list = $('#plSongs');
-    const rows = [...list.querySelectorAll('.song')];
-    const IDS = rows.map(r => r.dataset.id);
-    let yt = null, ready = false, failed = false, loading = false;
-    let cho = 0, choPhat = false, dangPhat = false, daLap = false, soLoi = 0;
-    let tTruoc = -1, boQuaDen = 0, onDoi = () => {};
-
-    function bao(on) {
-      if (on === dangPhat) return;
-      dangPhat = on;
-      box.classList.toggle('playing', on);
-      if (on) hint.textContent = '';
-      onDoi(on);
+    const el = $('#bgm');
+    let muon = false;    // em muốn nghe nhạc (chưa bấm tắt)
+    let micChan = false; // đang mở micro để thổi nến: tạm dừng, kẻo micro nghe nhầm tiếng nhạc là tiếng thổi
+    let daBat = false, onDoi = () => {};
+    try { el.volume = .85; } catch (e) {}
+    const bao = () => onDoi(!el.paused);
+    el.addEventListener('play', bao);
+    el.addEventListener('pause', bao);
+    function capNhat() {
+      const nen = muon && !micChan && !document.hidden;
+      if (nen && el.paused) {
+        const p = el.play();
+        if (p && p.catch) p.catch(e => {
+          if (e && e.name === 'NotAllowedError') return; // chưa được phép phát: chờ lần chạm sau
+          if (muon && !micChan) toast('Nhạc chưa tải được, em bấm nút Nhạc thử lại nha');
+        });
+      } else if (!nen && !el.paused) el.pause();
     }
-    function nap() {
-      if (ready || failed) return;
-      if (window.YT && window.YT.Player) { tao(); return; }
-      if (loading) return;
-      loading = true;
-      const truoc = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => { if (truoc) truoc(); tao(); };
-      const s = document.createElement('script');
-      s.src = 'https://www.youtube.com/iframe_api';
-      s.async = true;
-      s.onerror = hong;
-      document.head.appendChild(s);
-      setTimeout(() => { if (!ready) hong(); }, 15000);
-    }
-    function tao() {
-      if (yt || failed) return;
-      yt = new YT.Player('ytPlayer', {
-        width: '100%', height: '100%',
-        host: 'https://www.youtube-nocookie.com',
-        playerVars: { playsinline: 1, rel: 0, modestbranding: 1 },
-        events: { onReady: sanSang, onStateChange: doi, onError: loi },
-      });
-    }
-    function sanSang() {
-      ready = true;
-      // iPhone không cho trang tự phát có tiếng: lần đầu em phải chạm ▶ trên video
-      hint.textContent = 'Nếu nhạc chưa phát, em bấm ▶ trên video nha';
-      if (choPhat && !mic.on) yt.loadPlaylist(IDS, cho); else yt.cuePlaylist(IDS, cho);
-      choPhat = false;
-    }
-    // Không tải được YouTube (mạng chặn, mất mạng): bấm tên bài thì mở YouTube
-    function hong() {
-      if (ready || failed) return;
-      failed = true;
-      box.classList.add('khong-video');
-      hint.textContent = 'Chưa tải được trình phát, em bấm vào tên bài để nghe trên YouTube nha';
-    }
-    // Dò theo MÃ VIDEO chứ không theo số thứ tự: YouTube có thể lặng lẽ bỏ video hỏng khỏi danh sách
-    const vidNow = () => { try { const m = /[?&]v=([\w-]{11})/.exec(yt.getVideoUrl() || ''); return m ? m[1] : null; } catch (e) { return null; } };
-    const plNow = () => { try { return yt.getPlaylist() || []; } catch (e) { return []; } };
-    function danhDau() {
-      if (!yt || !yt.getVideoUrl) return;
-      const id = vidNow(), pl = plNow();
-      rows.forEach(r => {
-        r.classList.toggle('now', r.dataset.id === id);
-        if (pl.length && !pl.includes(r.dataset.id)) r.classList.add('loi');
-      });
-    }
-    function doi(e) {
-      const S = YT.PlayerState;
-      // Hết bài cuối thì quay lại bài đầu
-      if (!daLap && (e.data === S.CUED || e.data === S.PLAYING)) { try { yt.setLoop(true); daLap = true; } catch (er) {} }
-      if (e.data === S.PLAYING) { soLoi = 0; bao(true); }
-      else if (e.data === S.PAUSED || e.data === S.ENDED || e.data === S.CUED) bao(false);
-      danhDau();
-      // Dự phòng: hết bài mà YouTube chưa tự sang bài kế thì tự chuyển
-      if (e.data === S.ENDED) setTimeout(() => { if (yt.getPlayerState() === S.ENDED) yt.nextVideo(); }, 1500);
-    }
-    function loi() {
-      const r = rows.find(x => x.dataset.id === vidNow());
-      if (r) r.classList.add('loi');
-      if (++soLoi < IDS.length) setTimeout(() => yt.nextVideo(), 700);
-    }
-
-    // Trên tên miền thật, YouTube có lúc báo trạng thái -1 dù nhạc vẫn chạy.
-    // Nên mỗi giây xem thời gian phát có tăng không để biết nhạc đang chạy thật hay không.
-    setInterval(() => {
-      if (!ready || document.hidden) return;
-      if (Date.now() < boQuaDen) { tTruoc = -1; return; } // vừa bấm dừng: chờ YouTube dừng hẳn
-      let t, s;
-      try { t = yt.getCurrentTime() || 0; s = yt.getPlayerState(); } catch (e) { return; }
-      const chay = s === YT.PlayerState.PLAYING || (tTruoc >= 0 && t > tTruoc + .3 && t - tTruoc < 3);
-      tTruoc = t;
-      bao(chay);
-      danhDau();
-    }, 1000);
-
-    // Trên điện thoại, YouTube tự dừng khi khoá màn hình / chuyển app. Quay lại trang thì phát tiếp.
-    let phatTruocKhiAn = false, giayTruocKhiAn = 0, baiTruocKhiAn = null;
-    document.addEventListener('visibilitychange', () => {
-      if (!ready) return;
-      if (document.hidden) {
-        phatTruocKhiAn = dangPhat;
-        try { giayTruocKhiAn = yt.getCurrentTime() || 0; baiTruocKhiAn = vidNow(); } catch (e) {}
-        return;
-      }
-      if (!phatTruocKhiAn) return;
-      phatTruocKhiAn = false;
-      setTimeout(() => {
-        if (mic.on || vidNow() !== baiTruocKhiAn) return;
-        if (yt.getCurrentTime() < giayTruocKhiAn - 2) yt.seekTo(giayTruocKhiAn, true);
-        if (yt.getPlayerState() !== YT.PlayerState.PLAYING) yt.playVideo();
-      }, 400);
-    });
-
-    list.addEventListener('click', e => {
-      const r = e.target.closest('.song');
-      if (!r) return;
-      const id = r.dataset.id;
-      if (failed) { window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener'); return; }
-      if (mic.on) { toast('Đợi em thổi nến xong đã nha'); return; }
-      if (!ready) { cho = IDS.indexOf(id); choPhat = true; nap(); return; }
-      const pl = plNow(), idx = pl.length ? pl.indexOf(id) : IDS.indexOf(id);
-      if (idx < 0) { r.classList.add('loi'); toast('Bài này hiện chưa phát được ở đây, em chọn bài khác nha'); return; }
-      if (!pl.length) yt.loadPlaylist(IDS, idx); else yt.playVideoAt(idx);
-    });
-
-    function mo(phat) {
-      box.hidden = false;
-      if (failed) return;
-      if (!ready) {
-        if (phat) choPhat = true;
-        hint.textContent = 'Đang tải nhạc…';
-        nap();
-        return;
-      }
-      if (!phat) return;
-      if (!plNow().length) yt.loadPlaylist(IDS, 0); else yt.playVideo();
-    }
-    function dung() {
-      choPhat = false;
-      if (ready) { try { yt.pauseVideo(); } catch (e) {} }
-      boQuaDen = Date.now() + 2500;
-      bao(false);
-    }
+    function bat() { daBat = true; muon = true; capNhat(); }
+    function tat() { daBat = true; muon = false; capNhat(); }
+    // Lần chạm đầu tiên ở bất kỳ đâu cũng bật nhạc (phòng khi hộp quà không hiện). Bỏ qua nút Nhạc,
+    // vì nút đó tự bật/tắt; nếu bật ở đây thì cú chạm đó lại tắt ngay.
+    const lanDau = e => { if (!daBat && !(e.target.closest && e.target.closest('#musicBtn'))) bat(); };
+    ['pointerup', 'click', 'keydown'].forEach(t => document.addEventListener(t, lanDau, true));
+    // Khoá màn hình / chuyển app thì dừng, quay lại thì phát tiếp
+    document.addEventListener('visibilitychange', capNhat);
     return {
-      mo, dung,
-      get dangPhat() { return dangPhat; },
+      bat, tat,
+      micBat(on) { micChan = on; capNhat(); },
+      tuDau() { try { el.currentTime = 0; } catch (e) {} },
+      get dangPhat() { return !el.paused; },
       set onDoi(f) { onDoi = f; },
     };
   })();
@@ -934,10 +787,9 @@ h1,h2,h3{margin:0;line-height:1.25}
   }
   nhac.onDoi = musicUI;
   musicBtn.addEventListener('click', () => {
-    if (nhac.dangPhat) { nhac.dung(); return; }
+    if (nhac.dangPhat) { nhac.tat(); return; }
     if (mic.on) { toast('Đợi em thổi nến xong đã nha'); return; }
-    nhac.mo(true);
-    requestAnimationFrame(() => $('#player').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }));
+    nhac.bat();
   });
 
   const themeBtn = $('#themeBtn'), metaTheme = $('meta[name="theme-color"]');
@@ -976,7 +828,8 @@ h1,h2,h3{margin:0;line-height:1.25}
   giftBtn.addEventListener('click', () => {
     if (daMo) return;
     daMo = true;
-    am.unlock().then(okk => { if (okk) am.chime(); });
+    nhac.bat(); // gọi ngay trong cú chạm, iPhone mới cho phát tiếng
+    am.unlock().then(okk => { if (okk && !nhac.dangPhat) am.chime(); });
     gate.classList.add('opening');
     const [x, y] = centerOf(giftBtn);
     setTimeout(() => fx.confetti(x, y - 20, 90, 1.25), 300);
@@ -1094,14 +947,15 @@ h1,h2,h3{margin:0;line-height:1.25}
     stepEl.textContent = 'Đang mở micro…';
     try {
       await am.unlock();
-      nhac.dung(); // đang mở micro thì tạm dừng nhạc, kẻo micro nghe nhầm tiếng nhạc là tiếng thổi
+      nhac.micBat(true); // đang mở micro thì tạm dừng nhạc, kẻo micro nghe nhầm tiếng nhạc là tiếng thổi
       await mic.start(mucAm, tatMot);
       if (phase !== 'thoi') { mic.stop(); return; }
       meter.hidden = false;
       stepEl.textContent = 'Anh đang nghe đây. Em thổi mạnh vào micro điện thoại nhé.';
-      nut([['Thôi, chạm tay cho nhanh', 'soft', () => { mic.stop(); buocThoi(); }]]);
+      nut([['Thôi, chạm tay cho nhanh', 'soft', () => { mic.stop(); nhac.micBat(false); buocThoi(); }]]);
     } catch (e) {
       mic.stop();
+      nhac.micBat(false);
       if (phase === 'thoi') buocThoi();
       toast('Không mở được micro, em chạm vào từng ngọn nến để thổi nha', 4200);
     }
@@ -1126,9 +980,9 @@ h1,h2,h3{margin:0;line-height:1.25}
     nut([['Thắp lại nến', 'soft', buocUoc]]);
     fx.fireworks(6);
     setTimeout(() => fx.rain(110), 400);
-    // Thổi nến xong thì mở nhạc. Cuộn nhẹ cho thấy khung nhạc, vì trên iPhone em cần chạm ▶ lần đầu.
-    nhac.mo(true);
-    setTimeout(() => $('#player').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' }), 1800);
+    // Thổi bằng micro thì nhạc đã tạm dừng: phát lại từ đầu bài cho đúng lúc chúc mừng
+    if (!nhac.dangPhat) nhac.tuDau();
+    nhac.micBat(false);
   }
   buocUoc();
 
@@ -1252,10 +1106,10 @@ h1,h2,h3{margin:0;line-height:1.25}
     lo.forEach(el => io.observe(el));
   } else lo.forEach(el => el.classList.add('in'));
 
-  /* ---------- Khoá màn hình / chuyển app: tắt micro và nhạc cho đỡ tốn pin ---------- */
+  /* ---------- Khoá màn hình / chuyển app: tắt micro (nhạc tự dừng ở phần Nhạc) ---------- */
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) return;
-    if (mic.on) { mic.stop(); if (phase === 'thoi') buocThoi(); }
+    if (mic.on) { mic.stop(); nhac.micBat(false); if (phase === 'thoi') buocThoi(); }
   });
 })();
 </script>
