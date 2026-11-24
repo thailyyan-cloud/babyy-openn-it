@@ -68,10 +68,24 @@ body{
 button{font:inherit;color:inherit}
 h1,h2,h3{margin:0;line-height:1.25}
 .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg-1)}
-/* Lớp mờ phía sau: lấp hai bên khi màn hình rộng hơn ảnh (máy tính, máy tính bảng) */
+/* Lớp mờ phía sau: lấp chỗ trống khi màn hình rộng hơn dải ảnh */
 .bg::before{content:'';position:absolute;inset:-60px;background:url(anh-nen.jpg) center/cover no-repeat;filter:blur(30px) saturate(115%)}
-/* Ảnh rõ: luôn cao bằng màn hình, nên mặt luôn nằm khoảng 30–40% chiều cao, phía trên phần chữ */
-.bg::after{content:'';position:absolute;inset:0;background:var(--wash),url(anh-nen.jpg) 50% 0/auto 100% no-repeat}
+/* Màn hình dọc (điện thoại): mỗi lúc một ảnh, đổi dần theo phần đang xem */
+.bg i{position:absolute;inset:0;background:center 22%/cover no-repeat;opacity:0;transition:opacity 1.2s ease}
+.bg i.on{opacity:1}
+.bg .p1{background-image:url(anh-nen.jpg)}
+.bg .p2{background-image:url(anh-nen-2.jpg)}
+.bg .p3{background-image:url(anh-nen-3.jpg)}
+/* Lớp phủ: phía trên mỏng để thấy rõ mặt, phía dưới dày để chữ dễ đọc */
+.bg::after{content:'';position:absolute;inset:0;background:var(--wash)}
+/* Màn hình ngang (máy tính): ba ảnh cùng tỉ lệ nằm cạnh nhau, ảnh váy trắng ở giữa */
+@media (min-aspect-ratio:1/1){
+  .bg i{--w:calc(100vh * .6412);inset:0 auto;width:var(--w);opacity:1;transition:none;background-position:center top}
+  .bg .p1{left:calc(50% - var(--w) / 2)}
+  .bg .p2{left:calc(50% - var(--w) * 1.5)}
+  .bg .p3{left:calc(50% + var(--w) / 2)}
+}
+@media (prefers-reduced-motion:reduce){.bg i{transition:none}}
 #fx{position:fixed;inset:0;width:100%;height:100%;z-index:75;pointer-events:none}
 
 /* ---------- Nút góc trên ---------- */
@@ -316,7 +330,7 @@ h1,h2,h3{margin:0;line-height:1.25}
 </head>
 <body>
 
-<div class="bg" aria-hidden="true"></div>
+<div class="bg" aria-hidden="true"><i class="p1 on"></i><i class="p2"></i><i class="p3"></i></div>
 <canvas id="fx" aria-hidden="true"></canvas>
 
 <!-- ============ HỘP QUÀ MỞ ĐẦU ============ -->
@@ -379,8 +393,8 @@ h1,h2,h3{margin:0;line-height:1.25}
       <p class="chip" id="chip">25 tháng 11</p>
       <p class="hb-small">Chúc mừng sinh nhật</p>
       <h1 class="name">Huyền</h1>
-      <p class="hero-sub">Hôm nay là ngày của em. Mong cả ngày hôm nay em có thật nhiều chuyện vui.</p>
-      <p class="hint">Bóng bay chạm vào là nổ đó</p>
+      <p class="hero-sub">Hôm nay em là nhân vật chính nha! Cứ cười thật to, ăn thật ngon, nhận quà tới mỏi tay luôn 🎉</p>
+      <p class="hint">Thử chạm bóng bay coi, nổ bùm luôn đó 🎈</p>
     </div>
     <a class="scroll-cue" href="#banh" aria-label="Kéo xuống phần bánh sinh nhật">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
@@ -1115,6 +1129,18 @@ h1,h2,h3{margin:0;line-height:1.25}
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
     lo.forEach(el => io.observe(el));
   } else lo.forEach(el => el.classList.add('in'));
+
+  /* ---------- Ảnh nền đổi theo phần đang xem (chỉ thấy trên màn hình dọc) ---------- */
+  if ('IntersectionObserver' in window) {
+    const anh = [...document.querySelectorAll('.bg i')];
+    const THEO_PHAN = [['#hero', 0], ['#banh', 2], ['#sky', 1], ['#thu', 0]]; // 0 váy trắng, 1 váy ren, 2 ở biển
+    const ioAnh = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const k = THEO_PHAN.find(([sel]) => e.target.matches(sel))[1];
+      anh.forEach((a, i) => a.classList.toggle('on', i === k));
+    }), { rootMargin: '-45% 0px -54% 0px' }); // dải mỏng giữa màn hình
+    THEO_PHAN.forEach(([sel]) => { const el = $(sel); if (el) ioAnh.observe(el); });
+  }
 
   /* ---------- Khoá màn hình / chuyển app: tắt micro (nhạc tự dừng ở phần Nhạc) ---------- */
   document.addEventListener('visibilitychange', () => {
