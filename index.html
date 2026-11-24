@@ -154,7 +154,8 @@ h1,h2,h3{margin:0;line-height:1.25}
   filter:drop-shadow(0 2px 14px var(--glow));
 }
 .hero-sub{max-width:330px;margin:2px auto 0;font-size:17px;line-height:1.55;color:var(--ink-soft)}
-.hb-iu{display:block;margin:0 0 4px;font-size:21px;font-weight:700;color:var(--rose-deep)}
+.hb-iu{display:block;margin:0 0 4px;font-size:clamp(16px,5.1vw,21px);font-weight:700;white-space:nowrap;color:var(--rose-deep)}
+.hero-sub{text-wrap:balance}
 .hint{margin:26px 0 0;font-size:13px;font-weight:600;color:var(--ink-soft);opacity:.85}
 .scroll-cue{
   position:absolute;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));z-index:2;transform:translateX(-50%);
